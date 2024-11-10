@@ -1,11 +1,22 @@
+//@ts-nocheck
 import browser from "webextension-polyfill";
 
-// Trigger side panel opening when extension icon is clicked
-browser.action.onClicked.addListener((tab: browser.Tabs.Tab) => {
-  //@ts-ignore
-  browser.sidePanel.setOptions({
+browser.action.onClicked.addListener(async (tab: browser.Tabs.Tab) => {
+  await browser.sidePanel.setOptions({
     path: "index.html",
   });
-  //@ts-ignore
-  browser.sidePanel.open({ windowId: tab.windowId });
+
+  await browser.sidePanel.open(
+    {
+      windowId: tab.windowId,
+    },
+    async () => {
+      await browser.action.setPopup({
+        popup: "index.html",
+        tabId: tab.id,
+      });
+
+      await browser.action.openPopup();
+    }
+  );
 });
