@@ -9,7 +9,7 @@ import { storage } from "webextension-polyfill";
 import { TwitchAuthResponse } from "./types/TwitchAuthResponse";
 import handleTokenRefresh from "./api/handleTokenRefresh";
 import fetcher from "./api/fetcher";
-import { Pagination } from "./components/Pagination";
+import { PaginationComponent } from "./components/PaginationComponent";
 
 const App = () => {
   const { accessToken, saveAccessToken } = useTwitchAuth();
@@ -48,7 +48,7 @@ const App = () => {
     }
   }, [accessToken]);
 
-  const { data, error, isLoading } = useSWR(
+  const { data, error } = useSWR(
     user && accessToken
       ? [
           "https://api.twitch.tv/helix/streams/followed",
@@ -72,7 +72,7 @@ const App = () => {
 
   return (
     <div className="w-[360px] h-full">
-      {data && <Pagination streams={data.data} user={user} />}
+      {data && <PaginationComponent streams={data.data} user={user} />}
       {error && (
         <h1 className="text-lg font-semibold text-zinc-100">
           Error while loading live streams.
