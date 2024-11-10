@@ -24,7 +24,7 @@ export const ExtensionMenu: React.FC<{
 
   return (
     <Menu>
-      <MenuButton className="inline-flex items-center gap-1 p-1 px-2 ml-auto font-semibold rounded-lg text-sm/6 text-slate-100 focus:outline-none hover:bg-zinc-700/90">
+      <MenuButton className="inline-flex items-center gap-1 p-0.5 px-2 ml-auto font-semibold rounded-lg text-sm/6 text-slate-100 focus:outline-none hover:bg-zinc-700/90">
         <img
           src={profileUrl}
           alt="profile picture"
@@ -41,9 +41,11 @@ export const ExtensionMenu: React.FC<{
         <MenuSection>
           <div className="py-1.5 px-3 space-y-2">
             <span className="text-sm text-zinc-300">Preferences</span>
-            <div className="flex items-center gap-2 text-zinc-100">
-              <ComputerDesktopIcon className="size-6 fill-slate/70" />
-              <span>Thumbnails</span>
+            <div className="flex items-center justify-between gap-2 text-zinc-100">
+              <div className="flex items-center gap-1">
+                <ComputerDesktopIcon className="size-6 fill-slate/70" />
+                <span>Thumbnails</span>
+              </div>
               <Switch
                 checked={thumbnailEnabled}
                 onChange={() => setThumbnailEnabled(!thumbnailEnabled)}
@@ -61,7 +63,7 @@ export const ExtensionMenu: React.FC<{
         <MenuItem>
           <button
             onClick={() => removeAccessToken()}
-            className="group flex w-full text-red-400  items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-zinc-700/90"
+            className="group flex w-full text-red-500  items-center gap-1 rounded-lg py-1.5 px-3 data-[focus]:bg-zinc-700/90"
           >
             <ArrowLeftStartOnRectangleIcon className="size-6 fill-slate/70" />
             Logout
