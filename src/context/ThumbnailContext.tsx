@@ -12,13 +12,16 @@ const ThumbnailContext = createContext<
 export const ThumbnailProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [thumbnailEnabled, setThumbnailEnabledState] = useState<boolean>(false);
+  const [thumbnailEnabled, setThumbnailEnabledState] = useState<boolean>(true);
 
   useEffect(() => {
     async function getThumbnail() {
       try {
         const res = await browser.storage.sync.get("tw-enable-tbnl");
-        const isEnabled = Boolean(res?.["tw-enable-tbnl"]); // Convert to boolean
+        const isEnabled =
+          res?.["tw-enable-tbnl"] !== undefined
+            ? Boolean(res["tw-enable-tbnl"])
+            : true;
         setThumbnailEnabledState(isEnabled);
       } catch (error) {
         console.error("Error fetching thumbnail setting from storage:", error);
