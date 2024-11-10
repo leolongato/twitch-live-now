@@ -3,6 +3,8 @@
 @tailwind utilities;
 @layer base {
   :root {
-    --radius: 0.5rem
+    --radius: 0.5rem;
+    width: 360px;
+    height: 600px;
   }
 }
