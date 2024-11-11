@@ -5,7 +5,7 @@ function SkeletonStreamCard() {
   const { thumbnailEnabled } = useThumbnail();
 
   return (
-    <div className="flex flex-col items-center justify-center px-4 space-y-2">
+    <div className="flex flex-col items-center justify-center space-y-2 w-80">
       {thumbnailEnabled && <Skeleton className="w-full h-48 rounded-md" />}
       <div className="flex items-center w-full space-x-4">
         <Skeleton className="w-16 h-12 rounded-full" />

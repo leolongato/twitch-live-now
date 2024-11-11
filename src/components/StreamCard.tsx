@@ -13,7 +13,6 @@ export const StreamCard: React.FC<{
     user_login,
     game_name,
     tags,
-    type,
     title,
     viewer_count,
   },
@@ -31,7 +30,10 @@ export const StreamCard: React.FC<{
   return (
     <div
       onClick={openStream}
-      className="relative w-[90%] border-none rounded-md shadow-lg cursor-pointer select-none bg-zinc-700/80 hover:ring-2 hover:ring-offset-2 hover:ring-offset-zinc-700/80 hover:ring-fuchsia-800"
+      className={[
+        "relative border-none rounded-md shadow-lg cursor-pointer select-none w-80 bg-zinc-700/80 hover:ring-2 hover:ring-offset-2 hover:ring-offset-zinc-700/80 hover:ring-fuchsia-800",
+        thumbnailEnabled ? "h-[295px]" : "h-[115px]",
+      ].join(" ")}
     >
       <div className="relative">
         {thumbnailEnabled && (

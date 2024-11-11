@@ -67,20 +67,18 @@ export const PaginationComponent: React.FC<{
   }, [streams]);
 
   return (
-    <div>
-      <div className="flex items-center justify-center py-2 pl-4 pr-2 space-x-2">
+    <div className="flex flex-col h-screen">
+      <header className="flex flex-col items-center justify-center w-full gap-2 px-4 py-2 bg-zinc-800">
         <div className="relative flex items-center justify-center w-full">
           <MagnifyingGlassIcon className="absolute left-0 mx-2 text-zinc-400 size-6" />
           <Input
             className={clsx(
-              "w-full block rounded-lg border-none bg-zinc-700/90 py-1.5 px-3 pl-9 text-sm/6 text-zinc-300 placeholder:text-zinc-400",
-              "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+              "w-full block rounded-lg border-none bg-zinc-700/90 py-1.5 px-3 pl-9 text-sm/6 mr-2 text-zinc-300 placeholder:text-zinc-400",
+              "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/25"
             )}
             placeholder="Search for a streamer..."
             value={searchValue || ""}
-            onChange={(e) => {
-              setSearchValue(e.target.value);
-            }}
+            onChange={(e) => setSearchValue(e.target.value)}
           />
           {searchValue && (
             <XMarkIcon
@@ -91,59 +89,59 @@ export const PaginationComponent: React.FC<{
               className="absolute right-0 mx-2 cursor-pointer text-zinc-400 size-6"
             />
           )}
+          <ExtensionMenu
+            profileUrl={user.profile_image_url}
+            userName={user.display_name}
+          />
         </div>
-        <ExtensionMenu
-          profileUrl={user.profile_image_url}
-          userName={user.display_name}
-        />
-      </div>
-      {!debounceValue && !isPending() && (
-        <div className="flex items-center mx-4 mb-2 space-x-2 bg-zinc-800 w-80">
-          <PaginationButton
-            onClick={() => setCurrentPageIndex(0)}
-            disabled={currentPageIndex === 0}
-          >
-            <ChevronDoubleLeftIcon className="size-5" />
-          </PaginationButton>
+        {!debounceValue && !isPending() && (
+          <div className="flex items-center w-full mx-4 space-x-2 bg-zinc-800">
+            <PaginationButton
+              onClick={() => setCurrentPageIndex(0)}
+              disabled={currentPageIndex === 0}
+            >
+              <ChevronDoubleLeftIcon className="size-5" />
+            </PaginationButton>
 
-          <PaginationButton
-            onClick={() => setCurrentPageIndex(currentPageIndex - 1)}
-            disabled={currentPageIndex === 0}
-          >
-            <ArrowLeftIcon className="size-4" />
-          </PaginationButton>
+            <PaginationButton
+              onClick={() => setCurrentPageIndex(currentPageIndex - 1)}
+              disabled={currentPageIndex === 0}
+            >
+              <ArrowLeftIcon className="size-4" />
+            </PaginationButton>
 
-          <PaginationButton
-            onClick={() => setCurrentPageIndex(currentPageIndex + 1)}
-            disabled={currentPageIndex === pagesLength}
-          >
-            <ArrowRightIcon className="size-4" />
-          </PaginationButton>
+            <PaginationButton
+              onClick={() => setCurrentPageIndex(currentPageIndex + 1)}
+              disabled={currentPageIndex === pagesLength}
+            >
+              <ArrowRightIcon className="size-4" />
+            </PaginationButton>
 
-          <PaginationButton
-            onClick={() => setCurrentPageIndex(pagesLength)}
-            disabled={currentPageIndex === pagesLength}
-          >
-            <ChevronDoubleRightIcon className="size-5" />
-          </PaginationButton>
+            <PaginationButton
+              onClick={() => setCurrentPageIndex(pagesLength)}
+              disabled={currentPageIndex === pagesLength}
+            >
+              <ChevronDoubleRightIcon className="size-5" />
+            </PaginationButton>
 
-          <span className="text-base font-semibold text-zinc-300">
-            Page {currentPageIndex + 1} of {pagesLength + 1}
-          </span>
-        </div>
-      )}
+            <span className="text-base font-semibold text-zinc-300">
+              Page {currentPageIndex + 1} of {pagesLength + 1}
+            </span>
+          </div>
+        )}
+      </header>
+
       <div
-        className={[
-          "h-screen overflow-x-hidden pt-1 pb-28 overflow-y-scroll w-full flex flex-col gap-4 items-center",
-          scrollConfig.join(" "),
-        ].join(" ")}
+        className={`grid grid-cols-[repeat(auto-fill,minmax(320px,1fr))] gap-4 overflow-x-hidden overflow-y-auto py-2 pl-4 pr-2 w-full place-content-start ${scrollConfig.join(
+          " "
+        )}`}
       >
         {isPending() ? (
           <SkeletonStreamCards />
         ) : debounceValue ? (
           streams
             .filter((s) => s.user_name.toLowerCase().includes(debounceValue))
-            ?.map((value: any) => {
+            .map((value) => {
               const streamerImage = streamIds?.data.find(
                 (s) => s.id === value.user_id
               )?.profile_image_url;
@@ -169,7 +167,7 @@ export const PaginationComponent: React.FC<{
                 key={value.user_id}
               />
             );
-          })
+          }) || null
         )}
       </div>
     </div>

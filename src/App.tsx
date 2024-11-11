@@ -71,7 +71,7 @@ const App = () => {
   if (!user) return <LoadingSpinner />;
 
   return (
-    <div className="w-[360px] h-full">
+    <div className="w-screen h-full">
       {data && <PaginationComponent streams={data.data} user={user} />}
       {error && (
         <h1 className="text-lg font-semibold text-zinc-100">
