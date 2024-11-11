@@ -1,19 +1,18 @@
-import {
-  Menu,
-  MenuButton,
-  MenuItems,
-  MenuItem,
-  MenuSection,
-  MenuSeparator,
-  Switch,
-} from "@headlessui/react";
-import {
-  ChevronDownIcon,
-  ArrowLeftStartOnRectangleIcon,
-  ComputerDesktopIcon,
-} from "@heroicons/react/16/solid";
+import { PhotoIcon } from "@heroicons/react/16/solid";
 import { useTwitchAuth } from "../context/TwitchAuthContext";
 import { useThumbnail } from "@/context/ThumbnailContext";
+import { Avatar, AvatarImage } from "./ui/avatar";
+import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { LogOut } from "lucide-react";
 
 export const ExtensionMenu: React.FC<{
   profileUrl: string;
@@ -23,53 +22,55 @@ export const ExtensionMenu: React.FC<{
   const { thumbnailEnabled, setThumbnailEnabled } = useThumbnail();
 
   return (
-    <Menu>
-      <MenuButton className="inline-flex items-center gap-1 p-0.5 px-2 ml-auto font-semibold rounded-lg text-sm/6 text-slate-100 focus:outline-none hover:bg-zinc-700/90">
-        <img
-          src={profileUrl}
-          alt="profile picture"
-          className="rounded-full size-7"
-        />
-        <ChevronDownIcon className="size-8 fill-white/60" />
-      </MenuButton>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Avatar className="cursor-pointer size-9">
+          <AvatarImage src={profileUrl} />
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="z-20 w-56 text-sm font-semibold text-zinc-300 bg-zinc-800 border-zinc-700">
+        <DropdownMenuLabel className="flex items-center gap-1">
+          <Avatar className="mr-1 size-8">
+            <AvatarImage src={profileUrl} />
+          </Avatar>
+          Hi, <span className="font-bold">{userName}</span>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem disabled={true}>
+            <PhotoIcon className="size-6" />
+            <span>Stream Preview</span>
+          </DropdownMenuItem>
 
-      <MenuItems
-        transition
-        anchor="bottom end"
-        className="w-52 z-20 text-base origin-top-right rounded-xl bg-zinc-800 border border-white/5 bg-purple p-1 transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
-      >
-        <MenuSection>
-          <div className="py-1.5 px-3 space-y-2">
-            <span className="text-sm text-zinc-300">Preferences</span>
-            <div className="flex items-center justify-between gap-2 text-zinc-100">
-              <div className="flex items-center gap-1">
-                <ComputerDesktopIcon className="size-6 fill-slate/70" />
-                <span>Thumbnails</span>
-              </div>
-              <Switch
-                checked={thumbnailEnabled}
-                onChange={() => setThumbnailEnabled(!thumbnailEnabled)}
-                className="group relative flex h-5 w-10 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-green-700"
-              >
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none inline-block size-3 translate-x-0 rounded-full bg-white ring-0 shadow-lg transition duration-200 ease-in-out group-data-[checked]:translate-x-5"
-                />
-              </Switch>
-            </div>
-          </div>
-        </MenuSection>
-        <MenuSeparator className="h-px my-1 bg-white/5" />
-        <MenuItem>
-          <button
-            onClick={() => removeAccessToken()}
-            className="group flex w-full text-red-500  items-center gap-1 rounded-lg py-1.5 px-3 data-[focus]:bg-zinc-700/90"
+          <Tabs
+            defaultValue={thumbnailEnabled ? "enabled" : "disabled"}
+            className="flex justify-center w-full pb-1.5 dark px-2"
           >
-            <ArrowLeftStartOnRectangleIcon className="size-6 fill-slate/70" />
-            Logout
-          </button>
-        </MenuItem>
-      </MenuItems>
-    </Menu>
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger
+                onClick={() => setThumbnailEnabled(true)}
+                value="enabled"
+              >
+                Enabled
+              </TabsTrigger>
+              <TabsTrigger
+                onClick={() => setThumbnailEnabled(false)}
+                value="disabled"
+              >
+                Disabled
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          className="text-red-500 cursor-pointer focus:text-red-400 focus:bg-zinc-700/90"
+          onClick={() => removeAccessToken()}
+        >
+          <LogOut />
+          <span>Log out</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
