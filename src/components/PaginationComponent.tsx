@@ -11,7 +11,6 @@ import {
   MagnifyingGlassIcon,
   XMarkIcon,
 } from "@heroicons/react/16/solid";
-import clsx from "clsx";
 import { getUsersInfo } from "@/api/twitch";
 import { useTwitchAuth } from "@/context/TwitchAuthContext";
 import { ExtensionMenu } from "./ExtensionMenu";
@@ -70,25 +69,24 @@ export const PaginationComponent: React.FC<{
     <div className="flex flex-col h-screen">
       <header className="flex flex-col items-center justify-center w-full gap-2 px-4 py-2 bg-zinc-800">
         <div className="relative flex items-center justify-center w-full">
-          <MagnifyingGlassIcon className="absolute left-0 mx-2 text-zinc-400 size-6" />
-          <Input
-            className={clsx(
-              "w-full block rounded-lg border-none bg-zinc-700/90 py-1.5 px-3 pl-9 text-sm/6 mr-2 text-zinc-300 placeholder:text-zinc-400",
-              "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/25"
-            )}
-            placeholder="Search for a streamer..."
-            value={searchValue || ""}
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
-          {searchValue && (
-            <XMarkIcon
-              onClick={() => {
-                setSearchValue(null);
-                cancel();
-              }}
-              className="absolute right-0 mx-2 cursor-pointer text-zinc-400 size-6"
+          <div className="relative flex items-center justify-center w-full">
+            <MagnifyingGlassIcon className="absolute left-0 mx-2 text-zinc-400 size-6" />
+            <Input
+              className="w-full block rounded-lg border-none bg-zinc-700/90 py-1.5 pl-9 pr-8 text-sm/6 mr-2 text-zinc-300 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white/25"
+              placeholder="Search for a streamer..."
+              value={searchValue || ""}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
-          )}
+            {searchValue && (
+              <XMarkIcon
+                onClick={() => {
+                  setSearchValue(null);
+                  cancel();
+                }}
+                className="absolute right-0 z-20 mx-3 cursor-pointer text-zinc-400 size-6"
+              />
+            )}
+          </div>
           <ExtensionMenu
             profileUrl={user.profile_image_url}
             userName={user.display_name}
@@ -139,21 +137,29 @@ export const PaginationComponent: React.FC<{
         {isPending() ? (
           <SkeletonStreamCards />
         ) : debounceValue ? (
-          streams
-            .filter((s) => s.user_name.toLowerCase().includes(debounceValue))
-            .map((value) => {
-              const streamerImage = streamIds?.data.find(
-                (s) => s.id === value.user_id
-              )?.profile_image_url;
+          streams.filter((s) =>
+            s.user_name.toLowerCase().includes(debounceValue)
+          ).length > 0 ? (
+            streams
+              .filter((s) => s.user_name.toLowerCase().includes(debounceValue))
+              .map((value) => {
+                const streamerImage = streamIds?.data.find(
+                  (s) => s.id === value.user_id
+                )?.profile_image_url;
 
-              return (
-                <StreamCard
-                  streamData={value}
-                  streamImage={streamerImage || ""}
-                  key={value.user_id}
-                />
-              );
-            })
+                return (
+                  <StreamCard
+                    streamData={value}
+                    streamImage={streamerImage || ""}
+                    key={value.user_id}
+                  />
+                );
+              })
+          ) : (
+            <p className="text-base font-semibold text-zinc-400">
+              No streamers found.
+            </p>
+          )
         ) : (
           pages[currentPageIndex]?.map((value: any) => {
             const streamerImage = streamIds?.data.find(

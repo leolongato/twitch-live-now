@@ -1,7 +1,7 @@
 import { PhotoIcon } from "@heroicons/react/16/solid";
 import { useTwitchAuth } from "../context/TwitchAuthContext";
 import { useThumbnail } from "@/context/ThumbnailContext";
-import { Avatar, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import {
   DropdownMenu,
@@ -24,14 +24,20 @@ export const ExtensionMenu: React.FC<{
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="cursor-pointer size-9">
+        <Avatar className="cursor-pointer size-9 hover:ring-1 hover:ring-offset-1 hover:ring-offset-zinc-500 hover:ring-zinc-500">
           <AvatarImage src={profileUrl} />
+          <AvatarFallback>
+            {userName.substring(0, 2).toUpperCase()}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="z-20 w-56 text-sm font-semibold text-zinc-300 bg-zinc-800 border-zinc-700">
         <DropdownMenuLabel className="flex items-center gap-1">
           <Avatar className="mr-1 size-8">
             <AvatarImage src={profileUrl} />
+            <AvatarFallback className="text-zinc-800">
+              {userName.substring(0, 2).toUpperCase()}
+            </AvatarFallback>
           </Avatar>
           Hi, <span className="font-bold">{userName}</span>
         </DropdownMenuLabel>

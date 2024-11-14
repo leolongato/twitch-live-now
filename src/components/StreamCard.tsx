@@ -2,6 +2,7 @@ import { formatNumber } from "@/lib/utils";
 import { StreamData } from "../types/Stream";
 import { tabs } from "webextension-polyfill";
 import { useThumbnail } from "@/context/ThumbnailContext";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 export const StreamCard: React.FC<{
   streamData: StreamData;
@@ -31,7 +32,7 @@ export const StreamCard: React.FC<{
     <div
       onClick={openStream}
       className={[
-        "relative border-none rounded-md shadow-lg cursor-pointer select-none w-80 bg-zinc-700/80 hover:ring-2 hover:ring-offset-2 hover:ring-offset-zinc-700/80 hover:ring-fuchsia-800",
+        "relative border-none rounded-md shadow-lg cursor-pointer select-none w-80 bg-zinc-700/80 hover:ring-1 hover:ring-offset-1 hover:ring-offset-fuchsia-800 hover:ring-fuchsia-800",
         thumbnailEnabled ? "h-[295px]" : "h-[115px]",
       ].join(" ")}
     >
@@ -70,11 +71,13 @@ export const StreamCard: React.FC<{
       </div>
       <div>
         <div className="flex items-center gap-2 px-2 pb-2">
-          <img
-            src={streamImage}
-            alt="profile picture"
-            className="self-start w-10 h-10 mt-1 rounded-full"
-          />
+          <Avatar className="self-start mt-1 size-10">
+            <AvatarImage alt="profile picture" src={streamImage} />
+            <AvatarFallback>
+              {user_name.substring(0, 2).toUpperCase()}
+            </AvatarFallback>
+          </Avatar>
+
           <div className="flex flex-col gap-2">
             <div className="flex flex-col">
               <span className="text-base font-medium text-zinc-300">
