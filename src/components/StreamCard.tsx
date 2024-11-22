@@ -78,12 +78,15 @@ export const StreamCard: React.FC<{
             </AvatarFallback>
           </Avatar>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 overflow-hidden">
             <div className="flex flex-col">
               <span className="text-base font-medium text-zinc-300">
                 {user_name}
               </span>
-              <span className="text-xs font-medium text-zinc-400">
+              <span
+                className="w-full overflow-hidden text-xs font-medium text-zinc-400 text-nowrap text-ellipsis"
+                title={game_name}
+              >
                 {game_name}
               </span>
             </div>

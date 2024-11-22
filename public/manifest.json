@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Live Now",
-  "version": "1.0",
+  "version": "1.0.2",
   "description": "Check when your favorite streamers are live.",
   "icons": {
     "16": "icons/logo16x16.png",
