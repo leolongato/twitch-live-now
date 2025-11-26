@@ -1,0 +1,33 @@
+{
+  "name": "Live Now",
+  "description": "Check when your favorite streamers are live.",
+  "version": "1.0.3",
+  "manifest_version": 2,
+  "icons": {
+    "16": "icons/logo16x16.png",
+    "48": "icons/logo48x48.png",
+    "128": "icons/logo128x128.png"
+  },
+  "browser_action": {
+    "default_title": "Click to open extension",
+    "default_popup": "index.html"
+  },
+  "background": {
+    "scripts": ["src/background.ts"],
+    "persistent": false,
+    "type": "module"
+  },
+  "permissions": [
+    "https://id.twitch.tv/oauth2/*",
+    "https://api.twitch.tv/helix/*",
+    "http://localhost:8080/",
+    "identity",
+    "storage"
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "leonardolongato@gmail.com",
+      "strict_min_version": "58.0"
+    }
+  }
+}

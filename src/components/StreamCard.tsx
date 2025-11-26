@@ -48,8 +48,6 @@ export const StreamCard: React.FC<{
               src={thumbnail_url
                 .replace("{width}", "480")
                 .replace("{height}", "270")}
-              alt="stream thumbnail"
-              loading="lazy"
             />
           </>
         )}
@@ -95,8 +93,13 @@ export const StreamCard: React.FC<{
         <div className="flex flex-wrap items-center mx-2 space-x-2 overflow-hidden">
           {tags.slice(0, 3).map((value, key) => (
             <b
-              className="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-zinc-600 rounded-full text-zinc-100 mb-2"
+              className="
+                inline-block px-2 py-0.5 text-xs font-medium rounded-full mb-2
+                bg-zinc-600 text-zinc-100
+                max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap
+              "
               key={key}
+              title={value}
             >
               {value}
             </b>

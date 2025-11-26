@@ -1,31 +1,27 @@
 import { useTwitchAuth } from "../context/TwitchAuthContext";
-import { identity } from "webextension-polyfill";
-import { getAccessToken } from "../api/twitch";
+import { runtime } from "webextension-polyfill";
 import { FaTwitch } from "react-icons/fa";
 import { Button } from "@headlessui/react";
-
-const params = {
-  response_type: "code",
-  client_id: import.meta.env.VITE_TWITCH_CLIENT_ID,
-  redirect_uri: identity.getRedirectURL(),
-  scope: "user:read:follows",
-};
-const searchParams = new URLSearchParams(params);
-const AUTH_URL = `https://id.twitch.tv/oauth2/authorize?${searchParams.toString()}`;
+import { TwitchAuthResponse } from "@/types/TwitchAuthResponse";
 
 const TwitchLoginButton = () => {
   const { saveAccessToken } = useTwitchAuth();
 
   const handleLogin = async () => {
-    const response: string = await identity.launchWebAuthFlow({
-      url: AUTH_URL,
-      interactive: true,
-    });
-    const url = new URL(response);
-    const code = url.searchParams.get("code");
-    if (code) {
-      const accessToken = await getAccessToken(code);
-      saveAccessToken(accessToken);
+    try {
+      const response: {
+        success: false;
+        accessToken: TwitchAuthResponse;
+        error: string;
+      } = await runtime.sendMessage({
+        action: "START_TWITCH_AUTH",
+      });
+
+      if (response) {
+        saveAccessToken(response.accessToken);
+      }
+    } catch (error) {
+      console.error("Error sending message or during login process:", error);
     }
   };
 

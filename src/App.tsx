@@ -49,16 +49,9 @@ const App = () => {
   }, [accessToken]);
 
   const { data, error } = useSWR(
-    user && accessToken
-      ? [
-          "https://api.twitch.tv/helix/streams/followed",
-          accessToken,
-          user.id,
-          saveAccessToken,
-        ]
-      : null,
-    ([url, token, user_id, saveAccessToken]) =>
-      fetcher(url, token, user_id, saveAccessToken),
+    user && accessToken ? [accessToken, user.id, saveAccessToken] : null,
+    ([token, user_id, saveAccessToken]) =>
+      fetcher(token, user_id, saveAccessToken),
     {
       errorRetryCount: 3,
       errorRetryInterval: 3000,
